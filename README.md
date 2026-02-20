@@ -73,7 +73,7 @@ The project uses a Python virtual environment (`.venv`) to isolate dependencies.
     ```bash
     python -m playwright install chromium
     ```
-3.  Create a `.env` file in the root directory with the following variables:
+3.  Add to the `.env` file in the root directory the following variables:
     * `ALPHA_VANTAGE_KEY`: Your Alpha Vantage API Key
     * `BASE_URL`: https://finance.yahoo.com/markets/stocks/most-active/?start=0&count=
     * `PAGE_SIZE`: 100
