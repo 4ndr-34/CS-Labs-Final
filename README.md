@@ -31,15 +31,32 @@ The project satisfies advanced security requirements through the following mecha
 
 ## Data Workflow
 1.  **Extraction**: The Scraper retrieves all "Most Active" stocks (300+ entries) across multiple pages.
-2.  **Transformation**: The Processor cleans the "Price" column and identifies the top 20 most expensive stocks.
-3.  **Enrichment**: The API Client fetches the "Previous Close" for the top 20 stocks to provide a comparison against current prices.
+2.  **Transformation**: The Processor cleans the "Price" column and identifies the top 10 most expensive stocks.
+3.  **Enrichment**: The API Client fetches the "Previous Close" for the top 10 stocks to provide a comparison against current prices.
 4.  **Storage**: The data is split into two timestamped CSV files.
 5.  **Securing**: Both files are encrypted and moved to the `/extracted data/encrypted/` directory.
 
 ---
+## API Limitations and Usage
+The project utilizes the Alpha Vantage free tier for financial data enrichment. Please note the following:
+* **Rate Limits**: Alpha Vantage currently allows a maximum of **25 requests per day**.
+* **Optimization Strategy**: To ensure the application remains functional within these limits, the `DataProcessor` is configured to only enrich the top 10 most expensive stocks. This avoids hitting the daily quota while still satisfying the requirements for data integration.
 
-## Installation and Usage
+---
+# Installation and Usage
 
+## Environment Management
+The project uses a Python virtual environment (`.venv`) to isolate dependencies. 
+
+### Benefits:
+- **Consistency**: Ensures the project runs with the exact versions listed in `requirements.txt`.
+- **Cleanliness**: Keeps your global Python installation free of project-specific packages like Playwright or Cryptography.
+
+### Setup Instructions:
+1. Create the environment:
+   ```bash
+   python -m venv .venv
+   ```
 ### Prerequisites
 * Python 3.10+
 * Playwright
@@ -50,7 +67,7 @@ The project satisfies advanced security requirements through the following mecha
 ### Setup
 1.  Install dependencies:
     ```bash
-    ip install -r requirements.txt
+    pip install -r requirements.txt
     ```
 2.  Install Playwright browser:
     ```bash
@@ -66,3 +83,4 @@ The project satisfies advanced security requirements through the following mecha
 Run the main orchestrator:
 ```bash
 python modules/main.py
+```
