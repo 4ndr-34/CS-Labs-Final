@@ -1,4 +1,7 @@
+from pathlib import Path
+
 import requests
+from dotenv import load_dotenv
 import os
 import time
 
@@ -9,7 +12,7 @@ class FinanceAPI:
         # Using the Balance Sheet Statement endpoint to get totalLiabilities
         self.base_url = base_url
 
-    def get_total_liabilities(self, symbol):
+    def get_previous_close(self, symbol):
         """
         Fetches the most recent 'totalLiabilities' for a given stock symbol.
         Satisfies the requirement: 'Transformim dhe pasurim real i të dhënave'.
@@ -17,9 +20,21 @@ class FinanceAPI:
         if not self.api_key:
             return "Missing API Key"
 
+        params = {
+            "function": "GLOBAL_QUOTE",
+            "symbol": symbol,
+            "apikey": self.api_key
+        }
+
         try:
+            response = requests.get(self.base_url, params=params, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                quote = data.get("Global Quote", {})
+                return quote.get("08. previous close")
             # Construct URL for the specific symbol
-            url = f"{self.base_url}{symbol}&limit=1&apikey={self.api_key}"
+            url = f"{self.base_url}{symbol}?limit=1&apikey={self.api_key}"
+            print(url)
             response = requests.get(url, timeout=10)
 
 
