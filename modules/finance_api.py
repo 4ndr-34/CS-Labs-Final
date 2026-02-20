@@ -8,11 +8,9 @@ class FinanceAPI:
         # Using the Balance Sheet Statement endpoint to get totalLiabilities
         self.base_url = base_url
 
+    # Fetches the Previous Close price from the API
     def get_previous_close(self, symbol):
-        """
-        Fetches the most recent 'totalLiabilities' for a given stock symbol.
-        Satisfies the requirement: 'Transformim dhe pasurim real i të dhënave'.
-        """
+
         if not self.api_key:
             return "Missing API Key"
 
@@ -27,6 +25,7 @@ class FinanceAPI:
             if response.status_code == 200:
                 data = response.json()
                 quote = data.get("Global Quote", {})
+                #name of the response field
                 return quote.get("08. previous close")
             # Construct URL for the specific symbol
             url = f"{self.base_url}{symbol}?limit=1&apikey={self.api_key}"
@@ -45,6 +44,6 @@ class FinanceAPI:
                 return f"Error {response.status_code}"
 
         except Exception as e:
-            # Trajtim i mungesës së të dhënave ose problemeve të lidhjes
+            #Handling connection error
             print(f"API Connection Error for {symbol}: {e}")
             return "Connection Error"

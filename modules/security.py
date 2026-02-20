@@ -5,11 +5,8 @@ from pathlib import Path
 
 class SecurityManager:
     def __init__(self, key=None):
-        """
-        Initializes the encryption system.
-        Satisfies: 'Menaxhim korrekt i çelësave (.env ose gjenerim dinamik)'
-        """
-        # Logic to handle empty or missing ENCRYPTION_KEY
+        #Initialization of the encrypter
+        #Logic to handle empty or missing ENCRYPTION_KEY
         if key and len(key.strip()) > 0:
             self.key = key.encode() if isinstance(key, str) else key
             print("Security: Using existing encryption key from .env")
@@ -21,10 +18,8 @@ class SecurityManager:
         self.cipher = Fernet(self.key)
 
     def _save_key_to_env(self, key_string):
-        """
-        Handles missing, empty, or filled ENCRYPTION_KEY in .env.
-        Satisfies: 'Menaxhim korrekt i çelësave'.
-        """
+
+        # Handles missing, empty, or filled ENCRYPTION_KEY in .env.
         env_path = Path(__file__).resolve().parent.parent / ".env"
 
         if not env_path.exists():

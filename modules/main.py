@@ -29,11 +29,11 @@ def main():
     api_client = FinanceAPI(os.getenv("ALPHA_VANTAGE_URL"),os.getenv("ALPHA_VANTAGE_API_KEY"))
     processor = DataProcessor(raw_df)
 
-    # This will sort by price and only call the API for the top 20
-    generated_files, top_20_df = processor.process_and_save(api_client)
+    # This will sort by price and only call the API for the top 10
+    generated_files, top_10_df = processor.process_and_save(api_client)
 
     print("\n--- Results Preview (Top 5) ---")
-    print(top_20_df[['Symbol', 'Price', 'API_Previous_Close']].head())
+    print(top_10_df[['Symbol', 'Price', 'API_Previous_Close']].head())
 
     print("\n--- Securing Data (AES Encryption) ---")
     security = SecurityManager(encryption_key)
@@ -45,7 +45,6 @@ def main():
             encrypted_files.append(enc_p)
 
     # --- DEMO: DECRYPTION ---
-    # To prove it works for your lab evaluation, we decrypt the top-expensive file
     if encrypted_files:
         for file in encrypted_files:
             print("\n--- Demo: Restoring Encrypted Data ---")

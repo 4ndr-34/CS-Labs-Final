@@ -13,7 +13,7 @@ class Scraper:
         self.last_request_time = None
 
     def _smart_delay(self, seconds=2):
-        """Uses datetime to ensure a minimum gap between requests (Assignment Requirement)."""
+        # Uses datetime to ensure a minimum gap between requests (Assignment Requirement).
         if self.last_request_time is not None:
             elapsed = (datetime.datetime.now() - self.last_request_time).total_seconds()
             if elapsed < seconds:
