@@ -23,37 +23,37 @@ class DataProcessor:
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        #Identify Top 20 by Price
-        print("Sorting data to identify the top 20 most expensive stocks...")
+        #Identify Top 10 by Price
+        print("Sorting data to identify the top 10 most expensive stocks...")
         self.df['Numeric_Price'] = self.df['Price'].apply(self._clean_price)
         sorted_df = self.df.sort_values(by='Numeric_Price', ascending=False).copy()
 
         #Split the Dataframe
-        top_20 = sorted_df.head(20).copy()
+        top_10 = sorted_df.head(10).copy()
         rest_of_df = sorted_df.iloc[20:].copy()
 
         #API Enrichment (Previous Close)
         previous_closes = []
-        for symbol in top_20['Symbol']:
+        for symbol in top_10['Symbol']:
             print(f"Fetching API data for {symbol}...")
             prev_close = api_client.get_previous_close(symbol)
             previous_closes.append(prev_close)
             time.sleep(1.2)  # Alpha Vantage rate limit protection
 
-        top_20['API_Previous_Close'] = previous_closes
+        top_10['API_Previous_Close'] = previous_closes
 
         #Define File Paths
         top_20_path = output_dir / f"top_expensive_stocks_{timestamp}.csv"
         rest_path = output_dir / f"remaining_stocks_{timestamp}.csv"
 
         # Cleanup and Save
-        top_20.drop(columns=['Numeric_Price'], inplace=True)
+        top_10.drop(columns=['Numeric_Price'], inplace=True)
         rest_of_df.drop(columns=['Numeric_Price'], inplace=True)
 
-        top_20.to_csv(top_20_path, index=False)
+        top_10.to_csv(top_20_path, index=False)
         rest_of_df.to_csv(rest_path, index=False)
 
         print(f"CSV files created in: {output_dir.name}")
 
         # Return the list of paths for the SecurityManager to encrypt
-        return [top_20_path, rest_path]
+        return [top_20_path, rest_path], top_10
