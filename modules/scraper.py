@@ -1,10 +1,11 @@
 import datetime
+from pathlib import Path
 from playwright.sync_api import sync_playwright
 import pandas as pd
 import os
 from dotenv import load_dotenv
 
-## LATEST FROM scraper_two
+
 class Scraper:
     def __init__(self, base_url, headless=True):
         self.base_url = base_url
@@ -105,16 +106,3 @@ class Scraper:
 
         # Build and return the final DataFrame
         return pd.DataFrame(all_rows, columns=headers)
-
-
-if __name__ == "__main__":
-    # Test execution
-    base_url = str(os.getenv("BASE_URL"))
-    page_size=str(os.getenv("PAGE_SIZE", 100))
-    print("going to url: " + base_url)
-    print("page size: " + page_size)
-    scr = Scraper(base_url+page_size)
-    df = scr.fetch_data()
-    print("\nFinal DataFrame Preview:")
-    print(df.head())
-    print(f"\nTotal Rows Scraped: {len(df)}")
