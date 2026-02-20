@@ -66,3 +66,8 @@ The project satisfies advanced security requirements through the following mecha
 Run the main orchestrator:
 ```bash
 python modules/main.py
+```
+## API Limitations and Usage
+The project utilizes the Alpha Vantage free tier for financial data enrichment. Please note the following:
+* **Rate Limits**: Alpha Vantage currently allows a maximum of **25 requests per day**.
+* **Optimization Strategy**: To ensure the application remains functional within these limits, the `DataProcessor` is configured to only enrich the top 10 most expensive stocks. This avoids hitting the daily quota while still satisfying the requirements for data integration.
