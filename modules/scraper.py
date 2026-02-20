@@ -105,4 +105,6 @@ class Scraper:
                 browser.close()
 
         # Build and return the final DataFrame
-        return pd.DataFrame(all_rows, columns=headers)
+        df = pd.DataFrame(all_rows, columns=headers)
+        print(f"Extracted {len(df)} rows.")
+        return df
